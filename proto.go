@@ -1,7 +1,3 @@
-package proto
-
-// The Proto type. (Get it?)
-//
 // The `Proto` type is a stand-in approximation for dynamic typing. Due to
 // Go's powerful casting and type inference idioms, we can approximate the
 // flexibility of dynamic typing even though Go is a statically typed language.
@@ -45,4 +41,7 @@ package proto
 //
 // Ultimately, though, you're going to be typing the word Proto an awful lot,
 // and thus the type became the eponym.
+package proto
+
+// The Proto type. (Get it?)
 type Proto interface{}
