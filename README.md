@@ -2,12 +2,29 @@ proto
 =====
 
 `proto` gives Go operations like `Map`, `Reduce`, `Filter`, `De/Multiplex`, etc.
-without sacrificing idiomatic harmony or speed.
+without sacrificing idiomatic harmony or speed. It also introduces a convenience
+type for these functions, `Proto`, which is a stand-in for the empty interface
+(interface{}), which is used to box values being sent to these operations.
 
-Please see "proto.go" for more information at this time. If you find the
-documentation provided to be lacking or inaccessible, please file a bug report
-so as to motivate me to fix that issue. Or, if you're feeling productive and
-have some free time, file a Pull Request with a patch to fix it yourself!
+Examples
+--------
+
+* Double every integer a slice:
+
+    inputs := []Proto{0, 1, 2, 3, 4, 5, 6}
+    sent := Send(inputs)
+    doubler := func(a Proto) Proto {
+        return a.(int) * 2
+    }
+    mapped := Map(doubler, sent)
+    doubled := Gather(mapped)
+
+* Double every integer, chained:
+
+    inputs := []Proto{0, 1, 2, 3, 4, 5, 6}
+    doubled := Gather(Map(func(a Proto) Proto {
+        return a.(int) * 2
+    }, Send(inputs)))
 
 License
 -------

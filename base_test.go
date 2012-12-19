@@ -16,6 +16,7 @@ func filt_odd(a Proto) bool {
 	return a.(int)%2 == 1
 }
 
+// And a nice catch-nearly-all test.
 func TestSendGatherMapReduceFilter(t *testing.T) {
 	in := []Proto{0, 1, 2, 3, 4, 5, 6}
 	eighteen :=
