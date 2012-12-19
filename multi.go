@@ -5,8 +5,8 @@ import (
 )
 
 // Combine multiple input channels in to one.
-func Multiplex(inputs ...chan Proto) chan Proto {
-	send := make(chan Proto)
+func Multiplex(inputs ...chan Proto) (send chan Proto) {
+	send = make(chan Proto)
 	go func() {
 		defer close(send)
 		var group sync.WaitGroup
@@ -21,15 +21,16 @@ func Multiplex(inputs ...chan Proto) chan Proto {
 			}(inputs[i])
 		}
 	}()
-	return send
+	return
 }
 
 // Separate an input channel in to two output channels by applying a filter
 // function (see `Filter`). The first output channel will get the values that
 // passed the filter, the second will get those that did not.
-func Demultiplex(fn FilterFn, recv chan Proto) (chan Proto, chan Proto) {
-	passed := make(chan Proto)
-	failed := make(chan Proto)
+func Demultiplex(fn FilterFn, recv chan Proto) (passed chan Proto,
+	failed chan Proto) {
+	passed = make(chan Proto)
+	failed = make(chan Proto)
 	go func() {
 		defer close(passed)
 		defer close(failed)
@@ -41,7 +42,7 @@ func Demultiplex(fn FilterFn, recv chan Proto) (chan Proto, chan Proto) {
 			}
 		}
 	}()
-	return passed, failed
+	return
 }
 
 // It would not be hard to write an NDemultiplex that allows N-way

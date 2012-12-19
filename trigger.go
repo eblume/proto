@@ -8,21 +8,21 @@ import (
 type TriggerFn func() Proto
 
 // Call `fn` `count` times, passing the result on to the returned channel.
-func Trigger(fn TriggerFn, count int) chan Proto {
-	send := make(chan Proto)
+func Trigger(fn TriggerFn, count int) (send chan Proto) {
+	send = make(chan Proto)
 	go func() {
 		defer close(send)
 		for i := 0; i < count; i++ {
 			send <- fn()
 		}
 	}()
-	return send
+	return
 }
 
 // Exactly like `Trigger`, but each trigger happens in parallel. Order is NOT
 // preserved.
-func PTrigger(fn TriggerFn, count int) chan Proto {
-	send := make(chan Proto)
+func PTrigger(fn TriggerFn, count int) (send chan Proto) {
+	send = make(chan Proto)
 	go func() {
 		defer close(send)
 		var group sync.WaitGroup
@@ -35,5 +35,5 @@ func PTrigger(fn TriggerFn, count int) chan Proto {
 			}()
 		}
 	}()
-	return send
+	return
 }

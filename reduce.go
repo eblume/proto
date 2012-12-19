@@ -12,8 +12,8 @@ type ReduceFn func(Proto, Proto) Proto
 // and the first and only value will be sent as the result. If `recv` receives
 // no values, `nil` will be sent (as a Proto type) as the result. Regardless,
 // `recv` will always receive one value and then be closed.
-func Reduce(fn ReduceFn, recv chan Proto) chan Proto {
-	send := make(chan Proto, 1)
+func Reduce(fn ReduceFn, recv chan Proto) (send chan Proto) {
+	send = make(chan Proto, 1)
 	go func() {
 		defer close(send)
 		var accum Proto = nil
@@ -26,7 +26,7 @@ func Reduce(fn ReduceFn, recv chan Proto) chan Proto {
 		}
 		send <- accum
 	}()
-	return send
+	return
 }
 
 // Why no PReduce? Reduce is a tricky function to get right. The above version

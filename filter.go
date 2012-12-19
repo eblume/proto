@@ -14,8 +14,8 @@ type FilterFn func(Proto) bool
 // for each individual element the channel may receive. If true, the element
 // will be sent on the return channel. As usual, this function does not block
 // beyond the time taken to set up the returned channel.
-func Filter(fn FilterFn, recv chan Proto) chan Proto {
-	send := make(chan Proto)
+func Filter(fn FilterFn, recv chan Proto) (send chan Proto) {
+	send = make(chan Proto)
 	go func() {
 		defer close(send)
 		for val := range recv {
@@ -24,7 +24,7 @@ func Filter(fn FilterFn, recv chan Proto) chan Proto {
 			}
 		}
 	}()
-	return send
+	return
 }
 
 // Exactly like `Filter`, but every filter application gets its own goroutine.
@@ -32,8 +32,8 @@ func Filter(fn FilterFn, recv chan Proto) chan Proto {
 // over `Filter` if `fn` is very expensive or if the consumer of the result
 // channel is very slow and buffering would be preferred (thus keeping up
 // consumption rates of `recv`).
-func PFilter(fn FilterFn, recv chan Proto) chan Proto {
-	send := make(chan Proto)
+func PFilter(fn FilterFn, recv chan Proto) (send chan Proto) {
+	send = make(chan Proto)
 	go func() {
 		defer close(send)
 		var group sync.WaitGroup
@@ -48,5 +48,5 @@ func PFilter(fn FilterFn, recv chan Proto) chan Proto {
 			}(val)
 		}
 	}()
-	return send
+	return
 }

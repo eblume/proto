@@ -7,27 +7,27 @@ package proto
 // close that channel. If the slice is empty, this does the correct thing - it
 // creates the channel, and then closes it promptly. As expected, this function
 // does not block beyond the setup time.
-func Send(vals []Proto) chan Proto {
-	send := make(chan Proto, len(vals))
+func Send(vals []Proto) (send chan Proto) {
+	send = make(chan Proto, len(vals))
 	go func() {
 		defer close(send)
 		for i := range vals {
 			send <- vals[i]
 		}
 	}()
-	return send
+	return
 }
 
 // The inverse of `Send`. Given a channel of Proto's, gathers them in to a
 // newly created slice, and then returns that slice. This function DOES BLOCK.
 // If the channel never receives any values, the returned slice will be empty,
 // with length 0, and capacity 1.
-func Gather(recv chan Proto) []Proto {
-	result := make([]Proto, 0, 1)
+func Gather(recv chan Proto) (result []Proto) {
+	result = make([]Proto, 0, 1)
 	for val := range recv {
 		result = append(result, val)
 	}
-	return result
+	return
 }
 
 // Sends all items from channel `a` to channel `b`, and then closes `b`. Does
