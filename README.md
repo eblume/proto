@@ -39,10 +39,9 @@ Double every integer a slice:
 
 Double every integer, chained:
 
-    inputs := []Proto{0, 1, 2, 3, 4, 5, 6}
     doubled := Gather(Map(func(a Proto) Proto {
         return a.(int) * 2
-    }, Send(inputs)))
+    }, Send([]Proto{0, 1, 2, 3, 4, 5, 6})))
 
 License
 -------
