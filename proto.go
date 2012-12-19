@@ -1,3 +1,6 @@
+// proto gives Go operations like Map, Reduce, Filter, De/Multiplex, etc.
+// without sacrificing idiomatic harmony or speed.
+//
 // The `Proto` type is a stand-in approximation for dynamic typing. Due to
 // Go's powerful casting and type inference idioms, we can approximate the
 // flexibility of dynamic typing even though Go is a statically typed language.
