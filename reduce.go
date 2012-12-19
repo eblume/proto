@@ -1,7 +1,6 @@
 package proto
 
-// Reducing function type definition - implementer will need
-// to dilligently box & unbox from Proto via Type Assertion
+// Reducing function type definition.
 type ReduceFn func(Proto, Proto) Proto
 
 // Reduce the `recv` channel by repeatedly applying `fn` on pairs of values
