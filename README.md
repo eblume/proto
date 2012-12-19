@@ -27,7 +27,7 @@ with larger code bases that use Proto-style channels in chains.
 Examples
 --------
 
-Double every integer a slice:
+Double every integer in a slice:
 
     inputs := []Proto{0, 1, 2, 3, 4, 5, 6}
     sent := Send(inputs)
